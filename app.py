@@ -300,5 +300,8 @@ def _flash_reading_result(action: str, result: dict[str, float | bool | None]) -
         flash(f"{action}. Consumption since the previous reading: {result['consumption_kwh']:.3f} kWh.", "success")
 
 
+app = create_app()
+
+
 if __name__ == "__main__":
-    create_app().run(debug=Config.ENVIRONMENT == "development")
+    app.run(debug=Config.ENVIRONMENT == "development")
