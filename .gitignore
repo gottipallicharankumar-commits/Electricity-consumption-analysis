@@ -1,0 +1,13 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+instance/*.db
+charts/*.png
+exports/*.csv
+!charts/.gitkeep
+!exports/.gitkeep
+.DS_Store

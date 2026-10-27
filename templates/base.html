@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f7f5">
+  <title>{% block title %}Gridline | Energy Analysis{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-mark">G</span><span>GRIDLINE<small>ENERGY ANALYTICS</small></span></a>
+    <div class="nav-caption">WORKSPACE</div>
+    <nav aria-label="Main navigation">
+      <a class="nav-link {{ 'active' if request.endpoint == 'dashboard' }}" href="{{ url_for('dashboard') }}"><span>▦</span>Overview</a>
+      <a class="nav-link {{ 'active' if request.endpoint == 'consumers_page' }}" href="{{ url_for('consumers_page') }}"><span>◉</span>Consumers</a>
+      <a class="nav-link {{ 'active' if request.endpoint == 'meters_page' }}" href="{{ url_for('meters_page') }}"><span>▤</span>Meters</a>
+      <a class="nav-link {{ 'active' if request.endpoint == 'readings_page' }}" href="{{ url_for('readings_page') }}"><span>⌁</span>Readings</a>
+      <a class="nav-link {{ 'active' if request.endpoint == 'reports_page' }}" href="{{ url_for('reports_page') }}"><span>▥</span>Reports</a>
+      <a class="nav-link {{ 'active' if request.endpoint == 'consumer_comparison_page' }}" href="{{ url_for('consumer_comparison_page') }}"><span>⇄</span>Compare consumers</a>
+      <a class="nav-link {{ 'active' if request.endpoint == 'validation_page' }}" href="{{ url_for('validation_page') }}"><span>✓</span>Validation</a>
+    </nav>
+    <div class="sidebar-foot"><span class="status-dot"></span>DEMO ENVIRONMENT<small>Local analysis workspace</small></div>
+  </aside>
+  <main class="main-shell">
+    <header class="topbar"><button class="menu-toggle" aria-label="Toggle navigation">☰</button><div class="crumb">ELECTRICITY <span>/</span> {% block eyebrow %}OVERVIEW{% endblock %}</div><span class="demo-tag">DEVELOPMENT</span></header>
+    <section class="page-content">
+      {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash {{ category }}" role="status">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+      {% block content %}{% endblock %}
+    </section>
+    <footer>GRIDLINE <span>·</span> Consumption values are analytical estimates, not utility bills.</footer>
+  </main>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

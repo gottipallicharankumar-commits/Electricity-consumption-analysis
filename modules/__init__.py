@@ -1,0 +1,1 @@
+"""Domain logic for the Electricity Consumption Analysis System."""
