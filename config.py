@@ -19,7 +19,7 @@ class Config:
     SQLITE_PATH = os.getenv("SQLITE_PATH", "instance/electricity_demo.db")
     HIGH_USAGE_THRESHOLD_KWH = float(os.getenv("HIGH_USAGE_THRESHOLD_KWH", "120"))
     LARGE_JUMP_MULTIPLIER = float(os.getenv("LARGE_JUMP_MULTIPLIER", "3"))
-    ENVIRONMENT = os.getenv("APP_ENV", "development")
+    ENVIRONMENT = "production" if os.getenv("VERCEL") else os.getenv("APP_ENV", "development")
     MAX_CONTENT_LENGTH = 2 * 1024 * 1024
     WTF_CSRF_TIME_LIMIT = None
 
@@ -28,6 +28,11 @@ class Config:
         """Use configured MySQL exactly; otherwise explicitly select local SQLite."""
         if cls.DATABASE_URL:
             return cls.DATABASE_URL
+        if cls.ENVIRONMENT != "development":
+            raise RuntimeError(
+                "Set DATABASE_URL to a persistent database outside development mode. "
+                "SQLite file storage is intended for local development only."
+            )
         sqlite_path = Path(cls.SQLITE_PATH)
         if not sqlite_path.is_absolute():
             sqlite_path = ROOT_DIR / sqlite_path

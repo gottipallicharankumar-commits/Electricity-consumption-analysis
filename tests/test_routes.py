@@ -5,6 +5,7 @@ from sqlalchemy import delete, insert, select
 from sqlalchemy.exc import IntegrityError
 
 from app import create_app
+from config import Config
 from modules.models import consumers, meter_readings, meters
 from modules.repository import count_records
 
@@ -93,6 +94,13 @@ def test_csrf_rejects_state_change_without_token(tmp_path):
 def test_non_development_requires_configured_secret():
     with pytest.raises(RuntimeError, match="Set FLASK_SECRET_KEY"):
         create_app({"ENVIRONMENT": "production", "SECRET_KEY_CONFIGURED": False})
+
+
+def test_non_development_requires_persistent_database(monkeypatch):
+    monkeypatch.setattr(Config, "DATABASE_URL", "")
+    monkeypatch.setattr(Config, "ENVIRONMENT", "production")
+    with pytest.raises(RuntimeError, match="DATABASE_URL.*persistent database"):
+        Config.database_url()
 
 
 def test_add_consumer_meter_readings_and_export(client, app):

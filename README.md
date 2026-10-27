@@ -110,6 +110,10 @@ Without a `DATABASE_URL`, the application explicitly uses `SQLITE_PATH` (default
 
 Do not put real credentials in source control. `.env` is ignored by git. `schema.sql` is provided for inspection or manual MySQL setup.
 
+### Vercel Deployment
+
+Vercel deployments require `FLASK_SECRET_KEY` and `DATABASE_URL` environment variables. Configure `DATABASE_URL` with a reachable managed MySQL database, for example `mysql+pymysql://USER:PASSWORD@HOST/DATABASE`; SQLite files in `instance/` are local-development storage only and are not included in Git or persistent on Vercel. Existing local SQLite records are not automatically copied to the managed database. Configure these variables in the Vercel project settings for each deployment environment, then redeploy.
+
 To adjust high usage and jump detection, set `HIGH_USAGE_THRESHOLD_KWH` and `LARGE_JUMP_MULTIPLIER` in `.env`.
 
 ## Demo Data and Reset
